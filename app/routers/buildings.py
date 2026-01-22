@@ -4,7 +4,6 @@ from app.schemas.building import Building, BuildingCreate
 from app.crud.building import create_building, get_buildings, get_building
 from app.database import get_db
 
-
 router = APIRouter(prefix="/buildings", tags=["buildings"])
 
 

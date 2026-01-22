@@ -22,6 +22,23 @@ from app.models.organization import Organization, PhoneNumber
 from app.core.base import Base
 target_metadata = Base.metadata
 
+
+import sys
+import os
+
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+try:
+    from app.core.config import settings
+    DATABASE_URL = settings.DATABASE_URL
+except ImportError as e:
+    print(f"Error importing settings: {e}")
+    DATABASE_URL = None
+except AttributeError as e:
+    print(f"Error accessing DATABASE_URL from settings: {e}")
+    DATABASE_URL = None
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
@@ -40,7 +57,12 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    if DATABASE_URL:
+        url = DATABASE_URL
+        print(f"Using DATABASE_URL from settings: {url[:50]}...")
+    else:
+        url = config.get_main_option("sqlalchemy.url")
+    
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -59,6 +81,10 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    if DATABASE_URL:
+        config.set_main_option("sqlalchemy.url", DATABASE_URL)
+        print(f"Set database URL from settings: {DATABASE_URL[:50]}...")
+    
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

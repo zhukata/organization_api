@@ -2,27 +2,26 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.schemas.organization import Organization, OrganizationCreate
 from app.crud.organization import (
-    create_organization, 
-    get_organizations, 
-    get_organization, 
-    get_organizations_by_building, 
-    get_organizations_by_activity, 
+    create_organization,
+    get_organizations,
+    get_organization,
+    get_organizations_by_building,
+    get_organizations_by_activity,
     search_organizations_by_name,
-    get_organizations_in_radius
+    get_organizations_in_radius,
 )
 from app.database import get_db
 from typing import List
-
 
 router = APIRouter(prefix="/organizations", tags=["organizations"])
 
 
 @router.post("/", response_model=Organization)
 def create_new_organization(
-    organization: OrganizationCreate, 
-    phone_numbers: List[str], 
-    activity_ids: List[int], 
-    db: Session = Depends(get_db)
+    organization: OrganizationCreate,
+    phone_numbers: List[str],
+    activity_ids: List[int],
+    db: Session = Depends(get_db),
 ):
     return create_organization(db, organization, phone_numbers, activity_ids)
 
@@ -57,9 +56,6 @@ def search_organizations(name: str, db: Session = Depends(get_db)):
 
 @router.get("/in_radius/", response_model=list[Organization])
 def get_organizations_in_radius_endpoint(
-    latitude: float, 
-    longitude: float, 
-    radius_km: float, 
-    db: Session = Depends(get_db)
+    latitude: float, longitude: float, radius_km: float, db: Session = Depends(get_db)
 ):
     return get_organizations_in_radius(db, latitude, longitude, radius_km)

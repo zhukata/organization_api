@@ -2,42 +2,32 @@
 
 REST API для управления справочником организаций, зданий и деятельностей.
 
-## Запуск приложения
+## Запуск
 
-### Локальный запуск
-
-1. Установите зависимости:
+1. Склонируйте проект:
    ```bash
-   pip install -r requirements.txt
+   git clone https://github.com/zhukata/organization_api.git
    ```
 
-2. Создайте файл `.env` на основе `.env.example` и настройте переменные окружения:
+2. Создайте файл `.env` на основе `.env.example`:
    ```bash
    cp .env.example .env
    ```
 
-3. Примените миграции:
+3. Соберите и запустите контейнеры:
    ```bash
-   alembic upgrade head
+   docker compose up --build
    ```
 
-4. Запустите приложение:
+Приложение будет доступно по адресу: http://localhost:8000
+
+4. Запустите проверку функциональности:
    ```bash
-   uvicorn app.main:app --reload
+   python check_functionality.py
    ```
-
-### Запуск с Docker
-
-1. Соберите и запустите контейнеры с помощью Docker Compose:
-   ```bash
-   docker-compose up --build
-   ```
-
-2. Приложение будет доступно по адресу: http://localhost:8000
 
 ## API Документация
 
-После запуска приложения документация будет доступна по адресам:
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
 

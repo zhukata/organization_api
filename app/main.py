@@ -6,23 +6,20 @@ from app.routers import buildings, activities, organizations
 from app.database import engine
 from app.core.config import settings
 
-
-
 api_key_header = APIKeyHeader(name=settings.API_KEY_NAME, auto_error=False)
 
 
 async def get_api_key(api_key: str = Depends(api_key_header)):
     if api_key != settings.API_KEY:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid API Key"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid API Key"
         )
     return api_key
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(bind=engine)
+    # Base.metadata.create_all(bind=engine)
     yield
 
 

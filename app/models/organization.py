@@ -24,8 +24,12 @@ class Organization(Base):
     building_id: Mapped[int] = mapped_column(ForeignKey("buildings.id"))
 
     building: Mapped["Building"] = relationship("Building")
-    activities: Mapped[list["Activity"]] = relationship("Activity", secondary=organization_activity, backref="organizations")
-    phone_numbers: Mapped[list["PhoneNumber"]] = relationship("PhoneNumber", backref="organization")
+    activities: Mapped[list["Activity"]] = relationship(
+        "Activity", secondary=organization_activity, backref="organizations"
+    )
+    phone_numbers: Mapped[list["PhoneNumber"]] = relationship(
+        "PhoneNumber", backref="organization"
+    )
 
 
 class PhoneNumber(Base):

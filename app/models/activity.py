@@ -9,6 +9,10 @@ class Activity(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     name: Mapped[str] = mapped_column(index=True)
-    parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("activities.id"), nullable=True)
+    parent_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("activities.id"), nullable=True
+    )
 
-    parent: Mapped[Optional["Activity"]] = relationship("Activity", remote_side=[id], backref="children")
+    parent: Mapped[Optional["Activity"]] = relationship(
+        "Activity", remote_side=[id], backref="children"
+    )

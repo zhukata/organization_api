@@ -27,12 +27,12 @@ def get_activity_tree(db: Session, activity_id: int):
     activity = db.query(Activity).filter(Activity.id == activity_id).first()
     if not activity:
         return []
-    
+
     def get_children(activity):
         children = db.query(Activity).filter(Activity.parent_id == activity.id).all()
         for child in children:
             child.children = get_children(child)
         return children
-    
+
     activity.children = get_children(activity)
     return activity
