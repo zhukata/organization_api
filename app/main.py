@@ -1,9 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import APIKeyHeader
-from app.core.base import Base
 from app.routers import buildings, activities, organizations
-from app.database import engine
 from app.core.config import settings
 
 api_key_header = APIKeyHeader(name=settings.API_KEY_NAME, auto_error=False)

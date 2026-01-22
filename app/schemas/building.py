@@ -1,10 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class BuildingBase(BaseModel):
-    address: str
-    latitude: float
-    longitude: float
+    address: str = Field(..., description="Адрес здания")
+    latitude: float = Field(..., description="Широта здания")
+    longitude: float = Field(..., description="Долгота здания")
 
 
 class BuildingCreate(BuildingBase):
@@ -12,7 +12,7 @@ class BuildingCreate(BuildingBase):
 
 
 class Building(BuildingBase):
-    id: int
+    id: int = Field(..., description="Уникальный идентификатор здания")
 
     class Config:
         from_attributes = True

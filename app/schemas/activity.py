@@ -1,10 +1,12 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 
 class ActivityBase(BaseModel):
-    name: str
-    parent_id: Optional[int] = None
+    name: str = Field(..., description="Название активности")
+    parent_id: Optional[int] = Field(
+        None, description="ID родительской активности (опционально)"
+    )
 
 
 class ActivityCreate(ActivityBase):
@@ -12,7 +14,7 @@ class ActivityCreate(ActivityBase):
 
 
 class Activity(ActivityBase):
-    id: int
+    id: int = Field(..., description="Уникальный идентификатор активности")
 
     class Config:
         from_attributes = True

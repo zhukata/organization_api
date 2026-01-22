@@ -14,16 +14,35 @@ router = APIRouter(prefix="/activities", tags=["activities"])
 
 @router.post("/", response_model=Activity)
 def create_new_activity(activity: ActivityCreate, db: Session = Depends(get_db)):
+    """
+    Создать новую активность.
+
+    - **activity**: Данные для создания активности, включая имя и опциональный parent_id.
+    Возвращает созданную активность с присвоенным ID.
+    """
     return create_activity(db, activity)
 
 
 @router.get("/", response_model=list[Activity])
 def read_activities(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    """
+    Получить список всех активностей с пагинацией.
+
+    - **skip**: Количество записей для пропуска (по умолчанию 0).
+    - **limit**: Максимальное количество записей для возврата (по умолчанию 100).
+    Возвращает список активностей.
+    """
     return get_activities(db, skip, limit)
 
 
 @router.get("/{activity_id}", response_model=Activity)
 def read_activity(activity_id: int, db: Session = Depends(get_db)):
+    """
+    Получить активность по ID.
+
+    - **activity_id**: Уникальный идентификатор активности.
+    Возвращает активность или 404, если не найдена.
+    """
     db_activity = get_activity(db, activity_id)
     if db_activity is None:
         raise HTTPException(status_code=404, detail="Activity not found")
@@ -32,6 +51,12 @@ def read_activity(activity_id: int, db: Session = Depends(get_db)):
 
 @router.get("/tree/{activity_id}", response_model=Activity)
 def read_activity_tree(activity_id: int, db: Session = Depends(get_db)):
+    """
+    Получить дерево активности по ID, включая дочерние активности.
+
+    - **activity_id**: Уникальный идентификатор активности.
+    Возвращает активность с дочерними элементами или 404, если не найдена.
+    """
     activity_tree = get_activity_tree(db, activity_id)
     if activity_tree is None:
         raise HTTPException(status_code=404, detail="Activity not found")
