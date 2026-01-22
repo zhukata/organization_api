@@ -1,9 +1,9 @@
-from pydantic import BaseModel, field_validator, Field
+from pydantic import BaseModel, field_validator, Field, ConfigDict
 
 
 class OrganizationBase(BaseModel):
-    name: str = Field(..., description="Название организации")
-    building_id: int = Field(..., description="ID здания, где расположена организация")
+    name: str = Field(description="Название организации")
+    building_id: int = Field(description="ID здания, где расположена организация")
 
 
 class OrganizationCreate(OrganizationBase):
@@ -11,7 +11,7 @@ class OrganizationCreate(OrganizationBase):
 
 
 class Organization(OrganizationBase):
-    id: int = Field(..., description="Уникальный идентификатор организации")
+    id: int = Field(description="Уникальный идентификатор организации")
     phone_numbers: list[str] = Field(
         default_factory=list, description="Список номеров телефонов организации"
     )
@@ -38,5 +38,4 @@ class Organization(OrganizationBase):
             ]
         return v
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
